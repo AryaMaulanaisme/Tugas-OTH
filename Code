@@ -1,0 +1,127 @@
+No. 1
+
+#include <stdio.h>
+
+void tampilanKartu(char *kartu, int lenght)
+{
+    for(int i = 0; i < lenght; i++)
+    {
+        printf("%c ", kartu[i]);
+    }
+    printf("\n");
+}
+
+int nilaiKartu(char nilai)
+{
+    if(nilai == 'J')
+        return 11;
+    else if(nilai == 'Q')
+        return 12;
+    else if(nilai == 'K')
+        return 13;
+    else if(nilai == '1')
+        return 10;
+    else
+        return nilai - '0';
+}
+
+int pertukaran(int n, char *kartu)
+{
+    int tukar = 0;
+    for(int i = 0; i < n - 1; i++)
+    {
+        int min_idx = i;
+        for(int j = i + 1; j < n; j++)
+        {
+            if(nilaiKartu(kartu[j]) < nilaiKartu(kartu[min_idx]))
+            {
+                min_idx = j;
+            }
+        }
+        if(min_idx != i)
+        {
+            char temp = kartu[i];
+            kartu[i] = kartu[min_idx];
+            kartu[min_idx] = temp;
+            tukar++;
+
+            printf("Pertukaran %d : ", tukar);
+            tampilanKartu(kartu, n);
+        }
+    }
+    return tukar;
+}
+
+int main() {
+  int n;
+  scanf("%d", &n);
+
+  char kartu[n];
+  for(int i = 0; i < n; i++) 
+  {
+    scanf(" %c", &kartu[i]);
+  }
+
+  int tukar = pertukaran(n, kartu);
+  printf("%d\n", tukar);
+
+  return 0;
+}
+
+
+
+
+No 2.
+
+#include <stdio.h>
+
+int board(int x, int y) 
+{
+    return (x >= 0 && x < 8 && y >= 0 && y < 8);
+}
+
+void koboImaginaryChess(int i, int j, int size, int *chessBoard) 
+{
+    int movesX[] = {2, 1, -1, -2, -2, -1, 1, 2};
+    int movesY[] = {1, 2, 2, 1, -1, -2, -2, -1};
+
+    for (int k = 0; k < 8; k++) 
+    {
+        int nextX = i + movesX[k];
+        int nextY = j + movesY[k];
+        if (board(nextX, nextY)) 
+        {
+            *(chessBoard + nextX * size + nextY) = 1;
+        }
+    }
+}
+
+int main() 
+{
+    int i, j;
+    scanf("%d %d", &i, &j);
+
+    int size = 8;
+    int chessBoard[size][size];
+
+    for (int x = 0; x < size; x++) 
+    {
+        for (int y = 0; y < size; y++) 
+        {
+            chessBoard[x][y] = 0;
+        }
+    }
+
+    koboImaginaryChess(i, j, size, (int *)chessBoard);
+
+    for (int x = 0; x < size; x++) 
+    {
+        for (int y = 0; y < size; y++) 
+        {
+            printf("%d ", chessBoard[x][y]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
